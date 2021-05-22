@@ -1,9 +1,9 @@
-// lib/app.ts
 import express = require('express');
+
 const bodyParser = require('body-parser');
 const routes = require('./app.route');
+const config = require('config')
 
-// Create a new express application instance
 const app: express.Application = express();
 
 app.all('*', function (req, res, next) {
@@ -21,6 +21,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', routes);
 
-app.listen(3000, function () {
+app.listen(config.port, function () {
   console.log('Example app listening on port 3000!');
 });

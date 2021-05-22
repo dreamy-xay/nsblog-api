@@ -6,6 +6,8 @@ const userRoutes = require('../server/user/user.route');
 const router = express.Router();
 
 router.use('/user', userRoutes);
-router.use('/test', (req: Request, res: Response) => res.send({message: 'success'}));
+router.use('/test',
+    (req: Request, res: Response) => res.send({message: 'success'})
+);
 
 module.exports = router;

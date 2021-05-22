@@ -8,7 +8,9 @@
     "express": "^4.16.3",
     "ts-node-dev": "^1.0.0-pre.30",
     "typescript": "^3.1.1",
-    "mssql": "^6.2.1"
+    "mssql": "^6.2.1",
+    "dotenv": "^8.2.0",
+    "joi": "10.6.0"
   },
   "devDependencies": {},
   "scripts": {

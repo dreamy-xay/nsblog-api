@@ -1,17 +1,12 @@
-require('dotenv').config();
+const db = require('mssql');
+const config = require('config')
 
-const dbConfig = {
-    server: process.env.SERVER,
-    port: process.env.PORT,
-    database: process.env.DATABASE,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    options: {
-        trustedconnection: true,
-        enableArithAbort: true,
-        instancename: 'SQLEXPRESS',
-        encrypt: false
-    }
+async function query(sql: String) {
+    const pool = await db.connect(config.db)
+    const result = await pool.request().query(sql)
+    return result.recordsets
 }
 
-module.exports = dbConfig;
+module.exports = {
+    query
+};
