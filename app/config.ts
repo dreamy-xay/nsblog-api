@@ -17,8 +17,8 @@ if (error) {
 }
 
 module.exports = {
-    host: env.host,
-    port: env.port,
+    host: env.HOST,
+    port: env.PORT,
     db: {
         server: env.DB_SERVER,
         port: env.DB_PORT,

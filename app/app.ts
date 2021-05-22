@@ -2,7 +2,7 @@ import express = require('express');
 
 const bodyParser = require('body-parser');
 const routes = require('./app.route');
-const config = require('config')
+const config = require('./config')
 
 const app: express.Application = express();
 
