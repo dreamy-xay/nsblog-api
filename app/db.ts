@@ -1,12 +1,16 @@
-const db = require('mssql');
+const Sequelize = require('sequelize')
 const config = require('./config')
 
-async function query(sql: String) {
-    const pool = await db.connect(config.db)
-    const result = await pool.request().query(sql)
-    return result.recordset
-}
+const sequelize = new Sequelize(config.db.database, config.db.user, config.db.password, {
+    host: config.db.host,
+    port: config.db.port,
+    dialect: 'mysql'
+})
 
-module.exports = {
-    query
-};
+sequelize.authenticate().then(() => {
+    console.log('Connection has been established successfully.')
+}).catch((error: any) => {
+    console.error('Unable to connect to the database:', error)
+})
+
+module.exports = sequelize

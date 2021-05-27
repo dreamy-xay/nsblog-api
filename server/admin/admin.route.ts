@@ -1,8 +1,8 @@
 const express = require('express');
-const userCtrl = require('./user.controller');
+const adminCtrl = require('./admin.controller');
 
 const router = express.Router();
 
-router.route('/test').get(userCtrl.test);
+router.route('/').post(adminCtrl.create);
 
 module.exports = router;

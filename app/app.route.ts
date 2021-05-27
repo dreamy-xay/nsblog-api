@@ -1,11 +1,11 @@
 import {Request, Response} from "express";
 
 const express = require('express');
-const userRoutes = require('../server/user/user.route');
+const adminRoutes = require('../server/admin/admin.route');
 
 const router = express.Router();
 
-router.use('/user', userRoutes);
+router.use('/admin', adminRoutes);
 router.use('/test',
     (req: Request, res: Response) => res.send({message: 'success'})
 );
