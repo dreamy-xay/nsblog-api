@@ -3,36 +3,44 @@ import Sequelize from "sequelize";
 const db: Sequelize.Sequelize = require('../../app/db')
 
 const Admin = db.define('admin', {
-    // todo
     admin_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
     },
     account: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         allowNull: false,
     },
     password: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(10),
         allowNull: false,
     },
-    email: {
-        type: Sequelize.STRING,
-        allowNull: true,
+    email: Sequelize.STRING(20),
+    avatar: Sequelize.STRING(20),
+    signature: Sequelize.STRING(100),
+    profile: Sequelize.TEXT,
+}, {
+    freezeTableName: true,
+    timestamps: false
+})
+
+const Setting = db.define('setting', {
+    log_limit_time: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+        defaultValue: 30
     },
-    avatar: {
-        type: Sequelize.STRING,
-        allowNull: true,
+    article_history_count: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+        defaultValue: 30
     },
-    signature: {
-        type: Sequelize.STRING,
-        allowNull: true,
-    },
-    profile: {
-        type: Sequelize.TEXT,
-        allowNull: true,
+    theme: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+        defaultValue: 1
     }
 }, {
     freezeTableName: true,
@@ -40,5 +48,6 @@ const Admin = db.define('admin', {
 })
 
 module.exports = {
-    Admin
+    Admin,
+    Setting
 }
