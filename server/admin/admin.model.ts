@@ -9,12 +9,16 @@ const Admin = db.define('admin', {
         autoIncrement: true,
         allowNull: false,
     },
+    nickname: {
+        type: Sequelize.STRING(20),
+        allowNull: false,
+    },
     account: {
         type: Sequelize.STRING(20),
         allowNull: false,
     },
     password: {
-        type: Sequelize.STRING(10),
+        type: Sequelize.STRING(80),
         allowNull: false,
     },
     email: Sequelize.STRING(20),

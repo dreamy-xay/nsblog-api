@@ -1,26 +1,84 @@
-import express = require('express');
+import Express = require('express');
 
-const bodyParser = require('body-parser');
-const routes = require('./app.route');
+const BodyParser = require('body-parser')
+const Session = require('express-session')
+const Cors = require('cors')
+const Path = require('path')
+const routes = require('./app.route')
 const config = require('./config')
 
-const app: express.Application = express();
+const app: Express.Application = Express();
 
-app.all('*', function (req, res, next) {
-    // 设置允许跨域的域名，*代表允许任意域名跨域
-    res.header('Access-Control-Allow-Origin', '*')
-    // 允许的header类型
-    res.header('Access-Control-Allow-Headers', 'content-type')
-    // 跨域允许的请求方式
-    res.header('Access-Control-Allow-Methods', 'DELETE,PUT,POST,GET,OPTIONS')
-    if (req.method.toLowerCase() === 'options') {
-        res.send(200)// 让options尝试请求快速结束
-    } else { next() }
+app.use(Cors({origin: '*', optionsSuccessStatus: 200,}));
+app.use(BodyParser.json());
+app.use(BodyParser.urlencoded({ extended: false }));
+
+app.use(Session({
+    resave: false,
+    rolling: true,
+    saveUninitialized: true,
+    secret: config.sessionSecret,
+    name: 'SESSION',
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 2,
+    }
+}));
+
+app.use(Express.static(Path.join(__dirname, '../public')));
+const ExpressSwagger = require('express-swagger-generator')(app)
+ExpressSwagger({
+    swaggerDefinition: {
+        info: {
+            description: 'This is Beautiful-Blog server',
+            title: 'Beautiful-Blog API',
+            version: '1.0.1',
+            termsOfService: 'http://swagger.io/terms/',
+            contact: {
+                email: '1559248726@qq.com'
+            },
+            license: {
+                name: 'Apache 2.0',
+                url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+            }
+        },
+        host: `${config.host}:${config.port}`,
+        basePath: '/api',
+        produces: [
+            "application/json",
+            "application/xml"
+        ],
+        schemes: ['http', 'https'],
+        securityDefinitions: {
+            JWT: {
+                type: 'apiKey',
+                in: 'header',
+                name: 'Authorization',
+                description: "",
+            }
+        },
+        externalDocs: {
+            description: 'Find out more about Swagger',
+            url: 'http://swagger.io'
+        }
+    },
+    route: {
+        url: '/swagger',
+        docs: '/swagger.json' //swagger文件 api
+    },
+    basedir: __dirname, //app absolute path
+    files: [
+        '../server/**/*.route.ts',
+        '../server/**/*.model.ts'
+    ] //Path to the API handle folder
 })
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/api', routes);
 
-app.listen(config.port, function () {
-  console.log('Example app listening on port 3000!');
+app.use('/api/private/v1', routes);
+
+app.use((req, res) => {
+    return res.status(404).send({message: "API not found"})
+});
+
+app.listen(config.port, () => {
+    console.log(`  Server started on port ${config.port}.`);
+    console.log(`  http://localhost:${config.port}/swagger#/`)
 });
