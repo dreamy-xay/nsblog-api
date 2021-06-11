@@ -3,6 +3,7 @@ const Joi = require('joi');
 require('dotenv').config();
 
 const envSchema = Joi.object({
+    ENV: Joi.string().default('production'),
     HOST: Joi.string().default('127.0.0.1'),
     PORT: Joi.number().default(3000),
     SESSION_SECRET: Joi.string().default('secret_session'),
@@ -19,6 +20,7 @@ if (error) {
 }
 
 module.exports = {
+    env: env.ENV,
     host: env.HOST,
     port: env.PORT,
     sessionSecret: env.SESSION_SECRET,

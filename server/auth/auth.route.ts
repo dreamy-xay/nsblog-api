@@ -9,6 +9,7 @@ router.route('/admin')
      * @typedef AdminLogin
      * @property {string} account - 用户名 - eg:test
      * @property {string} password - 密码 - eg:test
+     * @property {string} captcha - 验证码（可选项） - eg:test
      */
     /**
      * @typedef AdminLoginRes
@@ -34,7 +35,7 @@ router.route('/admin')
 router.route('/captcha')
     /**
      * 获取验证码图片
-     * @route POST /auth/captcha
+     * @route GET /auth/captcha
      * @group auth - 关于管理员和用户的授权操作
      * @returns {object} 200 - 获取验证码图片成功
      */
