@@ -11,6 +11,9 @@ const config = require('../../app/config')
  * @param next
  */
 function tokenValidate(req: Request, res: Response, next: NextFunction) {
+    if (!BasicAuth(req))
+        return res.status(401).send({message: "token error"})
+
     JWT.verify(BasicAuth(req).name, config.jwtSecret, (error: Error, data: any) => {
         if (data.admin_id && !error) {
             // @ts-ignore

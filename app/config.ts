@@ -31,5 +31,9 @@ module.exports = {
         database: env.DB_DATABASE,
         user: env.DB_USER,
         password: env.DB_PASSWORD
-    }
+    },
+    upload: {
+        storeTo: '/upload/',
+        publicPath: '../../public'
+    },
 }

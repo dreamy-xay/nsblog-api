@@ -30,7 +30,7 @@ router.route('/admin')
      * @returns {AdminLoginRes.model} 200 - 登陆成功
      * @returns {Error} 403 - password error or username error
      */
-    .post(authCtrl.admin);
+    .post(authCtrl.adminLogin);
 
 router.route('/captcha')
     /**

@@ -7,20 +7,20 @@ const Bcrypt = require('bcryptjs')
 const config = require('../../app/config')
 const {Admin} = require('../admin/admin.model')
 
-async function admin(req: Request, res: Response) {
-    const {captcha} = req.body
-
-    if (BasicAuth(req).name) {
-        JWT.verify(BasicAuth(req).name, config.jwtSecret, (error: Error, data: any) => {
-            if (error)
-                return res.status(403).send({message: error.message})
-            if (data.text === captcha.toLowerCase())
-                adminLogin(req, res)
-            else
-                return res.status(403).send({message: "captcha error"})
-        });
-    } else await adminLogin(req, res)
-}
+// async function admin(req: Request, res: Response) {
+//     const {captcha} = req.body
+//
+//     if (BasicAuth(req).name) {
+//         JWT.verify(BasicAuth(req).name, config.jwtSecret, (error: Error, data: any) => {
+//             if (error)
+//                 return res.status(403).send({message: error.message})
+//             if (data.text === captcha.toLowerCase())
+//                 adminLogin(req, res)
+//             else
+//                 return res.status(403).send({message: "captcha error"})
+//         });
+//     } else await adminLogin(req, res)
+// }
 
 async function adminLogin(req: Request, res: Response) {
     const {account, password} = req.body
@@ -62,6 +62,6 @@ function captcha(req: Request, res: Response) {
 }
 
 module.exports = {
-    admin,
+    adminLogin,
     captcha
 };
