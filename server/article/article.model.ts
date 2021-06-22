@@ -133,7 +133,7 @@ const A_at = db.define('a_at', {
 })
 
 const Article_category = db.define('article_category', {
-    article_id: {
+    article_category_id: {
         type: Sequelize.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,

@@ -3,8 +3,8 @@ import {Request, Response} from "express";
 const Bcrypt = require('bcryptjs');
 const {Admin} = require('./admin.model');
 
-async function getInfo(req: Request, res: Response) {
-    // @ts-ignore
+async function getInfo(req: any, res: Response) {
+
     const admin = await Admin.findOne({where: {admin_id: req.admin_id}});
 
     if (admin) {

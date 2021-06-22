@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response} from "express";
+import {NextFunction, Response} from "express";
 
 const JWT = require('jsonwebtoken')
 const BasicAuth = require('basic-auth')
@@ -10,13 +10,12 @@ const config = require('../../app/config')
  * @param res
  * @param next
  */
-function tokenValidate(req: Request, res: Response, next: NextFunction) {
+function tokenValidate(req: any, res: Response, next: NextFunction) {
     if (!BasicAuth(req))
         return res.status(401).send({message: "token error"})
 
     JWT.verify(BasicAuth(req).name, config.jwtSecret, (error: Error, data: any) => {
         if (data.admin_id && !error) {
-            // @ts-ignore
             req.admin_id = data.admin_id
             return next();
         }

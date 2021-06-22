@@ -4,12 +4,14 @@ const express = require('express');
 const authRoutes = require('../server/auth/auth.route');
 const adminRoutes = require('../server/admin/admin.route');
 const fileRoutes = require('../server/file/file.route');
+const articleRoutes = require('../server/article/article.route');
 
 const router = express.Router();
 
 router.use('/admin', adminRoutes);
 router.use('/auth', authRoutes);
 router.use('/file', fileRoutes);
+router.use('/article', articleRoutes);
 
 router.use('/test', (req: Request, res: Response) =>
     res.send({message: 'success'})

@@ -44,7 +44,7 @@ ExpressSwagger({
             }
         },
         host: `${config.host}:${config.port}`,
-        basePath: '/api',
+        basePath: '/api/private/v1',
         produces: [
             "application/json",
             "application/xml"

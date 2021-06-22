@@ -2,7 +2,6 @@ import {Request, Response} from "express";
 
 const Captcha = require('svg-captcha')
 const JWT = require('jsonwebtoken')
-const BasicAuth = require('basic-auth')
 const Bcrypt = require('bcryptjs')
 const config = require('../../app/config')
 const {Admin} = require('../admin/admin.model')
@@ -51,12 +50,11 @@ async function adminLogin(req: Request, res: Response) {
     return res.status(403).send({message: "account error"})
 }
 
-function captcha(req: Request, res: Response) {
+function captcha(req: any, res: Response) {
     const {text, data} = Captcha.create({fontSize: 50, width: 100, height: 40});
 
     res.cookie("captcha", JWT.sign({text: text.toLowerCase()}, config.jwtSecret, {expiresIn: 60 * 5}))
 
-    // @ts-ignore
     res.set('Content-Type', 'image/svg+xml')
     res.send(String(data))
 }
