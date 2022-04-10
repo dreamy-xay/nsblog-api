@@ -1,65 +1,71 @@
-import {Request, Response} from "express";
+import { Request, Response } from 'express'
 
-const Captcha = require('svg-captcha')
-const JWT = require('jsonwebtoken')
-const Bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const db = require('../../app/db')
 const config = require('../../app/config')
-const {Admin} = require('../admin/admin.model')
 
-// async function admin(req: Request, res: Response) {
-//     const {captcha} = req.body
-//
-//     if (BasicAuth(req).name) {
-//         JWT.verify(BasicAuth(req).name, config.jwtSecret, (error: Error, data: any) => {
-//             if (error)
-//                 return res.status(403).send({message: error.message})
-//             if (data.text === captcha.toLowerCase())
-//                 adminLogin(req, res)
-//             else
-//                 return res.status(403).send({message: "captcha error"})
-//         });
-//     } else await adminLogin(req, res)
-// }
+async function login(req: Request, res: Response) {
+  const { username, password } = req.body
 
-async function adminLogin(req: Request, res: Response) {
-    const {account, password} = req.body
+  const user = await db.query(`SELECT password, is_active FROM user WHERE username = '${username}'`)
 
-    const admin = await Admin.findOne({where: {account}});
+  if (user.length !== 0) {
 
-    if (admin) {
-        const isValid = await Bcrypt.compare(password, admin.password);
-
-        if (isValid) {
-            const token = JWT.sign({
-                admin_id: admin.admin_id
-            }, config.jwtSecret, {expiresIn: 60 * 60 * 24 * 2});
-
-            return res.send({
-                token,
-                id: admin.admin_id,
-                account: admin.account,
-                nickname: admin.nickname,
-                email: admin.email,
-                avatar: admin.avatar,
-                signature: admin.signature,
-                profile: admin.profile,
-            })
-        }
-        return res.status(403).send({message: "password error"})
+    if (Number(user[0].is_active.toString('hex')) === 0) {
+      return res.status(401).send({
+        error: 'Account has been disabled'
+      })
     }
-    return res.status(403).send({message: "account error"})
+
+    const isValid = await bcrypt.compare(password, user[0].password);
+    if (isValid) {
+      const token = jwt.sign({
+        username: username
+      }, config.jwtSecret, { expiresIn: 60 * 60 * 24 * 2 });
+
+      return res.status(200).send({
+        token: token
+      })
+    }
+  }
+
+  return res.status(401).send({
+    error: 'Password or username error'
+  })
 }
 
-function captcha(req: any, res: Response) {
-    const {text, data} = Captcha.create({fontSize: 50, width: 100, height: 40});
+function logout(req: Request, res: Response) {
 
-    res.cookie("captcha", JWT.sign({text: text.toLowerCase()}, config.jwtSecret, {expiresIn: 60 * 5}))
+  return res.status(200).send()
+}
 
-    res.set('Content-Type', 'image/svg+xml')
-    res.send(String(data))
+async function logoff(req: any, res: Response) {
+  const { password } = req.body
+
+  const user = await db.query(`SELECT password, is_active FROM user WHERE username = '${req.username}'`)
+
+  if (Number(user[0].is_active.toString('hex')) === 0) {
+    return res.status(401).send({
+      error: 'Account has been disabled'
+    })
+  }
+
+  const isValid = await bcrypt.compare(password, user[0].password)
+
+  if (isValid) {
+    await db.query(`UPDATE user SET is_active = 0 WHERE username = '${req.username}'`)
+
+    return res.status(200).send()
+  }
+
+  return res.status(403).send({
+    error: 'Password error'
+  })
 }
 
 module.exports = {
-    adminLogin,
-    captcha
-};
+  login,
+  logout,
+  logoff
+}

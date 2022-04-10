@@ -1,20 +1,26 @@
-import {Request, Response} from "express";
+import {Request, Response} from 'express'
+const attentionRoutes = require('../server/attention/attention.route')
+const authRoutes = require('../server/auth/auth.route')
+const favoriteRoutes = require('../server/favorite/favorite.route')
+const imageRoutes = require('../server/image/image.route')
+const settingRoutes = require('../server/setting/setting.route')
+const topicRoutes = require('../server/topic/topic.route')
+const userRoutes = require('../server/user/user.route')
 
-const express = require('express');
-const authRoutes = require('../server/auth/auth.route');
-const adminRoutes = require('../server/admin/admin.route');
-const fileRoutes = require('../server/file/file.route');
-const articleRoutes = require('../server/article/article.route');
+const express = require('express')
 
-const router = express.Router();
+const router = express.Router()
 
-router.use('/admin', adminRoutes);
-router.use('/auth', authRoutes);
-router.use('/file', fileRoutes);
-router.use('/article', articleRoutes);
+router.use('/attentions', attentionRoutes)
+router.use('/auth', authRoutes)
+router.use('/favorites', favoriteRoutes)
+router.use('/images', imageRoutes)
+router.use('/setting', settingRoutes)
+router.use('/topics', topicRoutes)
+router.use('/users', userRoutes)
 
-router.use('/test', (req: Request, res: Response) =>
+router.use('/test', (req: Request, res: Response) => {
     res.send({message: 'success'})
-);
+})
 
-module.exports = router;
+module.exports = router

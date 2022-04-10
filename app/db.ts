@@ -1,16 +1,28 @@
-const Sequelize = require('sequelize')
+const Mysql = require("mysql")
 const config = require('./config')
 
-const sequelize = new Sequelize(config.db.database, config.db.user, config.db.password, {
-    host: config.db.host,
-    port: config.db.port,
-    dialect: 'mysql'
+const connection = Mysql.createPool({
+  database: config.db.database,
+  user: config.db.user,
+  password: config.db.password,
+  host: config.db.host,
+  port: config.db.port
 })
 
-sequelize.authenticate().then(() => {
-    console.log('Connection has been established successfully.')
-}).catch((error: Error) => {
-    console.error('Unable to connect to the database:', error)
-})
+async function query(sql: string) {
+  console.log(sql)
+  return new Promise(resolve => {
+    connection.query(sql, (err: any, res: any) => {
+      // console.log(err)
+      // console.log(res)
+      if (err)
+        resolve(err)
+      else
+        resolve(res)
+    })
+  })
+}
 
-module.exports = sequelize
+module.exports = {
+  query
+}
