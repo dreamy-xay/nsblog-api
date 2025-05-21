@@ -4,20 +4,20 @@
 
 <p align="center">
   <a href="https://github.com/expressjs/express">
-    <img src="https://img.shields.io/badge/express-4.16.3-brightgreen.svg" alt="element-ui">
+    <img src="https://img.shields.io/badge/express-4.16.3-brightgreen.svg" alt="express">
   </a>
-  <a href="https://github.com/dreamy-xay/nsblog-web/blob/develop/LICENSE">
+  <a href="https://github.com/dreamy-xay/nsblog-api/blob/develop/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
   </a>
 </p>
 
 ## 介绍
 
-[nsblog-api](https://github.com/dreamy-xay/nsblog-api) 是 [nsblog-web](https://github.com/dreamy-xay/nsblog-web) 项目的 API 服务，其技术栈为 **Express + MySQL + TypeScript**。更多细节可参考 [API 文档](https://documenter.getpostman.com/view/11073029/Tzm9jZuZ#08e1ac00-d596-4ecc-82f8-aabd40af29d9)
+[nsblog-api](https://github.com/dreamy-xay/nsblog-api) 是 [nsblog-web](https://github.com/dreamy-xay/nsblog-web) 项目的 API 服务，其技术栈为 **Express + MySQL + TypeScript**。更多细节可参考 [API 文档](https://documenter.getpostman.com/view/11073029/Tzm9jZuZ#08e1ac00-d596-4ecc-82f8-aabd40af29d9)。
 
 ## 初始化项目
 
-根据环境需求，需配置 .env 文件，可参考 [.env.example](.env.example) 文件进行设置
+根据环境需求，需配置 .env 文件，可参考 [.env.example](.env.example) 文件进行设置。
 
 ## 启动项目
 
